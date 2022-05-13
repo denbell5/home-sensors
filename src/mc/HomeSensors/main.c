@@ -5,14 +5,14 @@
  * Author : Denis
  */ 
 
-#include <avr/io.h>
-
+#include "main.h"
 
 int main(void)
 {
-    /* Replace with your application code */
+	uart_init(MYUBRR);
     while (1) 
     {
+		_delay_ms(1000);
+		uart_transmit_line("test");
     }
 }
-
