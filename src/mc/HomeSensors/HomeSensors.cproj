@@ -133,10 +133,22 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="i2c.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="i2c.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tc74.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tc74.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="uart.c">
