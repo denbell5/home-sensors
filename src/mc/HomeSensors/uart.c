@@ -1,10 +1,3 @@
-/*
- * uart.c
- *
- * Created: 5/13/2022 5:44:08 PM
- *  Author: Denis
- */ 
-
 #include "uart.h"
 
 void uart_init(unsigned int ubrr)

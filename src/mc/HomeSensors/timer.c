@@ -1,10 +1,3 @@
-/*
- * CFile1.c
- *
- * Created: 5/14/2022 4:03:09 PM
- *  Author: Denis
- */ 
-
 #include "timer.h"
 
 void timer_init(void)

@@ -1,24 +1,15 @@
-/*
- * i2c.c
- *
- * Created: 5/13/2022 8:01:28 PM
- *  Author: Denis
- */ 
-
 #include "i2c.h"
 
 void i2c_init()
 {
-	TWBR=0x20; // скорость передачи (при 8 м√ц получаетс€ 100 к√ц)
+	TWBR=0x20; // set transmission speed
 }
 
-// ожидание
 void i2c_wait(void)
 {
 	while (!(TWCR & (1<<TWINT)));
 }
 
-// старт
 uint8_t i2c_start(void)
 {
 	uint8_t status = TWI_OK;
@@ -32,13 +23,11 @@ uint8_t i2c_start(void)
 	return TWI_OK;
 }
 
-// стоп
 void i2c_stop(void)
 {
 	TWCR = (1<<TWEN)|(1<<TWINT)|(1<<TWSTO);
 }
 
-// отправка адреса
 uint8_t i2c_send_addr(uint8_t address)
 {
 	uint8_t status;
@@ -54,7 +43,6 @@ uint8_t i2c_send_addr(uint8_t address)
 	return TWI_OK;
 }
 
-// отправка байта
 uint8_t i2c_send_byte(uint8_t byte)
 {
 	uint8_t status;
@@ -70,7 +58,6 @@ uint8_t i2c_send_byte(uint8_t byte)
 	return TWI_OK;
 }
 
-// чтение байта. ack=0/1 - NACK/ACK
 uint8_t i2c_read_byte(uint8_t *byte, uint8_t ack)
 {
 	uint8_t status;

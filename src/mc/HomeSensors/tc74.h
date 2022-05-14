@@ -1,10 +1,3 @@
-/*
- * tc74.h
- *
- * Created: 5/13/2022 7:54:01 PM
- *  Author: Denis
- */
-
 #include "main.h"
 
 #define TC74_READ  0b10011011

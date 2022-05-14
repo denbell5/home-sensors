@@ -1,9 +1,3 @@
-/*
- * tc74.c
- *
- * Created: 5/13/2022 7:53:41 PM
- *  Author: Denis
- */
 #include "tc74.h"
 #include "i2c.h"
 
@@ -29,9 +23,9 @@ uint8_t tc74_is_ready()
 void tc74_write(uint8_t data)
 {
 	i2c_start();
-	i2c_send_addr(TC74_WRITE); // адресс датчика
-	i2c_send_byte(0x01); // адресс регистра конфигурации
-	i2c_send_byte(data); // данные в регистр
+	i2c_send_addr(TC74_WRITE); // tc74 sensor address
+	i2c_send_byte(0x01); // send config register address
+	i2c_send_byte(data); // send data
 	i2c_stop();
 }
 

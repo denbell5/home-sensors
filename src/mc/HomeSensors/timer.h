@@ -1,11 +1,3 @@
-/*
- * timer.h
- *
- * Created: 5/14/2022 4:03:43 PM
- *  Author: Denis
- */ 
-
-
 #ifndef TIMER_H_
 #define TIMER_H_
 
