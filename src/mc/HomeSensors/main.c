@@ -67,7 +67,6 @@ void process_motion()
 	if (motion_status != next_motion_status)
 	{
 		motion_status = next_motion_status;
-		uint8_t motion_status = PINC & 0b0000001;
 		if (motion_status)
 		{
 			PORTC |= 0b00000010; // enable C1 pin (led)
