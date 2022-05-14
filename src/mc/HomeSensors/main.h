@@ -19,8 +19,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "avr/interrupt.h"
 #include "uart.h"
 #include "i2c.h"
 #include "tc74.h"
+#include "timer.h"
 
 #endif /* MAIN_H_ */
