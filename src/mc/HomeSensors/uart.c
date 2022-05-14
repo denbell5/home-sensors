@@ -28,20 +28,19 @@ void uart_transmit_char(unsigned char data)
 	UDR = data; // Put data into buffer, sends the data
 }
 
-void uart_transmit_line(char* str)
+void uart_transmit_str(char* str)
 {
 	for(int i=0; i < strlen(str); i++)
 	{
 		uart_transmit_char(str[i]);
 	}
-	uart_transmit_char('\r');
 }
 
 void uart_transmit_int(int val)
 {
 	char str[12];
 	itoa(val, str, 10);
-	uart_transmit_line(str);
+	uart_transmit_str(str);
 }
 
 void uart_transmit_break()
