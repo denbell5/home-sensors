@@ -14,3 +14,4 @@
 void tc74_write(uint8_t data);
 uint8_t tc74_read();
 uint8_t tc74_is_ready();
+void tc74_init();

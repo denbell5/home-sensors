@@ -28,11 +28,8 @@ int main(void)
 	
 	PORTC = 0x00;
 	
-	while(!(tc74_is_ready())) {
-		_delay_ms(500); // todo
-	}
+	tc74_init();
 	temp = tc74_read();
-	temp = tc74_read(); // todo
 	
     while (1) 
     {

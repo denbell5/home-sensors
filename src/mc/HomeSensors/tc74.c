@@ -7,6 +7,14 @@
 #include "tc74.h"
 #include "i2c.h"
 
+void tc74_init()
+{
+	while(!(tc74_is_ready())) {
+		_delay_ms(500); // bad
+	}
+	tc74_read();
+}
+
 uint8_t tc74_is_ready()
 {
 	uint8_t status;
