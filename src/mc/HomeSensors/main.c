@@ -6,8 +6,6 @@
  */ 
 
 #include "main.h"
-#include "i2c.h"
-#include "tc74.h"
 
 int main(void)
 {

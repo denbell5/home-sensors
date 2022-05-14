@@ -20,5 +20,7 @@
 #include <stdlib.h>
 
 #include "uart.h"
+#include "i2c.h"
+#include "tc74.h"
 
 #endif /* MAIN_H_ */
