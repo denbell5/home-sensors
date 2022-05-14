@@ -32,6 +32,7 @@ ISR (TIMER1_COMPA_vect)
 	time_window == motion_timeout_window &&
 	motion_timeout_pending)
 	{
+		PORTC &= 0b11111101; // disable C1 pin (led)
 		uart_transmit_str("[event] motion_timeout");
 		uart_transmit_break();
 		motion_timeout_pending = 0;
@@ -48,7 +49,8 @@ void init_app()
 	sei(); // enable global interrupts
 	timer_init();
 	
-	PORTC = 0x00; // set C pins as input
+	DDRC = 0b00000010; // set C1 as output and other C pins as input
+	
 	
 	tc74_init();
 	temp = tc74_read();
@@ -73,9 +75,13 @@ void process_motion()
 	{
 		motion_status = next_motion_status;
 		uint8_t motion_status = PINC & 0b0000001;
+		if (motion_status)
+		{
+			PORTC |= 0b00000010; // enable C1 pin (led)
+		}
 		if (!motion_status)
 		{
-			motion_timeout_pending = 1;
+			motion_timeout_pending = 1; // schedule motion timeout
 			motion_timeout_window = !time_window; // next window
 		}
 		uart_transmit_str("[event] motion_status_change ");
