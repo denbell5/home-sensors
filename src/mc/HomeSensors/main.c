@@ -20,12 +20,12 @@ uint8_t time_window = 0;
 int main(void)
 {
 	init_app();
-    while (1) 
-    {
+	while (1)
+	{
 		process_temp();
 		process_motion();
 		_delay_ms(300);
-    }
+	}
 }
 
 // timer interrupt, every 5 seconds
@@ -85,9 +85,9 @@ void process_motion()
 void process_motion_timeout()
 {
 	if (
-		!motion_status &&
-		time_window == motion_timeout_window &&
-		motion_timeout_pending)
+	!motion_status &&
+	time_window == motion_timeout_window &&
+	motion_timeout_pending)
 	{
 		PORTC &= 0b11111101; // disable C1 pin (led)
 		uart_transmit_str("[event] motion_timeout");
