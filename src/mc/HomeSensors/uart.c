@@ -36,3 +36,15 @@ void uart_transmit_line(char* str)
 	}
 	uart_transmit_char('\r');
 }
+
+void uart_transmit_int(int val)
+{
+	char str[12];
+	itoa(val, str, 10);
+	uart_transmit_line(str);
+}
+
+void uart_transmit_break()
+{
+	uart_transmit_char('\r');		
+}

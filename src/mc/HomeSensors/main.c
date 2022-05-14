@@ -7,6 +7,8 @@
 
 #include "main.h"
 
+uint8_t temp = 0;
+
 uint8_t motion_status = 0;
 uint8_t motion_timeout_window = 0;
 uint8_t motion_timeout_pending = 0;
@@ -35,9 +37,7 @@ int main(void)
 	sei(); // enable global interrupts
 	timer_init();
 	
-	uint8_t temp = 0;
-	
-	PORTC = 0x00;
+	PORTC = 0x00; // set C pins as input
 	
 	tc74_init();
 	temp = tc74_read();
@@ -45,14 +45,12 @@ int main(void)
     while (1) 
     {
 		uint8_t next_temp = tc74_read();
-		
 		if (next_temp != temp)
 		{
 			temp = next_temp;
-			char temp_str[5];
-			itoa(temp, temp_str, 10);
 			uart_transmit_line("temp changed: ");
-			uart_transmit_line(temp_str);
+			uart_transmit_int(temp);
+			uart_transmit_break();
 		}
 		
 		uint8_t next_motion_status = PINC & 0b0000001;
@@ -65,10 +63,9 @@ int main(void)
 				motion_timeout_pending = 1;
 				motion_timeout_window = !time_window; // next window
 			}
-			char temp_str[5];
-			itoa(motion_status, temp_str, 10);
 			uart_transmit_line("motion status changed: ");
-			uart_transmit_line(temp_str);
+			uart_transmit_int(motion_status);
+			uart_transmit_break();
 		}
 		
 		_delay_ms(300);
