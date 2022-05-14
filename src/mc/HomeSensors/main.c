@@ -3,7 +3,19 @@
 void init_app();
 void process_temp();
 void process_motion();
-void process_timer();
+void process_motion_timeout();
+
+// Global variables
+
+uint8_t temp = 0;
+
+uint8_t motion_status = 0;
+uint8_t motion_timeout_window = 0;
+uint8_t motion_timeout_pending = 0;
+
+uint8_t time_window = 0;
+
+// Global variables end
 
 int main(void)
 {
@@ -16,28 +28,10 @@ int main(void)
     }
 }
 
-uint8_t temp = 0;
-
-uint8_t motion_status = 0;
-uint8_t motion_timeout_window = 0;
-uint8_t motion_timeout_pending = 0;
-
-uint8_t time_window = 0;
-
 // timer interrupt, every 5 seconds
 ISR (TIMER1_COMPA_vect)
 {
-	if (
-	!motion_status &&
-	time_window == motion_timeout_window &&
-	motion_timeout_pending)
-	{
-		PORTC &= 0b11111101; // disable C1 pin (led)
-		uart_transmit_str("[event] motion_timeout");
-		uart_transmit_break();
-		motion_timeout_pending = 0;
-	}
-	
+	process_motion_timeout();
 	time_window = !time_window; // switch time window to next (0 or 1)
 }
 
@@ -50,7 +44,6 @@ void init_app()
 	timer_init();
 	
 	DDRC = 0b00000010; // set C1 as output and other C pins as input
-	
 	
 	tc74_init();
 	temp = tc74_read();
@@ -87,5 +80,19 @@ void process_motion()
 		uart_transmit_str("[event] motion_status_change ");
 		uart_transmit_int(motion_status);
 		uart_transmit_break();
+	}
+}
+
+void process_motion_timeout()
+{
+	if (
+		!motion_status &&
+		time_window == motion_timeout_window &&
+		motion_timeout_pending)
+	{
+		PORTC &= 0b11111101; // disable C1 pin (led)
+		uart_transmit_str("[event] motion_timeout");
+		uart_transmit_break();
+		motion_timeout_pending = 0;
 	}
 }
