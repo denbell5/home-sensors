@@ -7,12 +7,24 @@
 
 #include "main.h"
 
-unsigned char i = 0;
+uint8_t motion_status = 0;
+uint8_t motion_timeout_window = 0;
+uint8_t motion_timeout_pending = 0;
+
+uint8_t time_window = 0;
 
 ISR (TIMER1_COMPA_vect)
 {
-	i++;
-	uart_transmit_line("timer");
+	if (
+		!motion_status &&
+		time_window == motion_timeout_window &&
+		motion_timeout_pending)
+	{
+		uart_transmit_line("[event] motion_timeout");
+		motion_timeout_pending = 0;
+	}
+	
+	time_window = !time_window; // 0 or 1
 }
 
 int main(void)
@@ -24,7 +36,6 @@ int main(void)
 	timer_init();
 	
 	uint8_t temp = 0;
-	uint8_t motion_detected = 0;
 	
 	PORTC = 0x00;
 	
@@ -44,13 +55,18 @@ int main(void)
 			uart_transmit_line(temp_str);
 		}
 		
-		uint8_t next_motion_detected = PINC & 0b0000001;
-		if (motion_detected != next_motion_detected)
+		uint8_t next_motion_status = PINC & 0b0000001;
+		if (motion_status != next_motion_status)
 		{
-			motion_detected = next_motion_detected;
-			uint8_t motion_detected = PINC & 0b0000001;
+			motion_status = next_motion_status;
+			uint8_t motion_status = PINC & 0b0000001;
+			if (!motion_status)
+			{
+				motion_timeout_pending = 1;
+				motion_timeout_window = !time_window; // next window
+			}
 			char temp_str[5];
-			itoa(motion_detected, temp_str, 10);
+			itoa(motion_status, temp_str, 10);
 			uart_transmit_line("motion status changed: ");
 			uart_transmit_line(temp_str);
 		}
