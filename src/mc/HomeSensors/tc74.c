@@ -9,31 +9,21 @@
 
 void tc74_init()
 {
+	i2c_start();
+	i2c_send_addr(TC74_WRITE);
+	i2c_send_byte(0x01);
+	
+	i2c_start();
+	i2c_send_addr(TC74_READ);
+	
 	while(!(tc74_is_ready())) {
-		_delay_ms(500); // bad
+		_delay_ms(100);
 	}
-	tc74_read();
 }
 
 uint8_t tc74_is_ready()
 {
-	uint8_t status;
-	status = i2c_start();
-	status = i2c_send_addr(TC74_WRITE);
-	status = i2c_send_byte(0x01);
-	
-	status = i2c_start();
-	status = i2c_send_addr(TC74_READ);
-	
-	uint8_t data = i2c_readNak();
-	if(data & TC74_DATA_READY)
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
+	return i2c_readNak() & TC74_DATA_READY;
 }
 
 void tc74_write(uint8_t data)

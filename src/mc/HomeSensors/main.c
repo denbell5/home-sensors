@@ -23,7 +23,7 @@ int main(void)
 	sei(); // enable global interrupts
 	timer_init();
 	
-	uint8_t temp;
+	uint8_t temp = 0;
 	uint8_t motion_detected = 0;
 	
 	PORTC = 0x00;
